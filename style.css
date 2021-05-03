@@ -1,0 +1,28 @@
+.discordrep-piechart {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+}
+
+.discordrep-key {
+	margin-bottom: 10px;
+}
+
+.discordrep-colorKey {
+	width: 20px;
+	height: 20px;
+	border-radius: 3px;
+	margin-right: 10px;
+}
+
+.discordrep-colorKey-upvote {
+	background-color: #3498db;
+}
+
+.discordrep-colorKey-downvote {
+	background-color: #e74c3c;
+}
+
+.discordrep-colorKey-novotes {
+	background-color: var(--background-secondary);
+}

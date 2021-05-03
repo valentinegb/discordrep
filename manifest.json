@@ -1,0 +1,10 @@
+{
+	"name": "DiscordRep",
+	"description": "Displays a users reputation as listed at discordrep.com.",
+	"version": "1.0.0",
+	"license": "MIT",
+	"author": {
+		"name": "Vbriese",
+		"id": "441384103946878987"
+	}
+}
