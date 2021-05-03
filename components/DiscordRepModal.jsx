@@ -53,17 +53,14 @@ export default class DiscordRepModal extends Component {
 				if (response.body.optout)
 					return this.setState({
 						content: (
-							<EmptyState theme={theme}>
+							<EmptyState className={marginBottom20} theme={theme}>
 								<EmptyState.Image
 									darkSrc="/assets/8c998f8fb62016fcfb4901e424ff378b.svg"
 									lightSrc="/assets/645df33d735507f39c78ce0cac7437f0.svg"
 									width={433 / 1.25}
 									height={232 / 1.25}
 								/>
-								<EmptyState.Text
-									className={marginBottom20}
-									note="This user has opted out."
-								/>
+								<EmptyState.Text note="This user has opted out." />
 							</EmptyState>
 						),
 					});
@@ -138,7 +135,7 @@ export default class DiscordRepModal extends Component {
 			.catch((response) => {
 				this.setState({
 					content: (
-						<EmptyState theme={theme}>
+						<EmptyState className={marginBottom20} theme={theme}>
 							<EmptyState.Image
 								darkSrc="/assets/e9baf4b505eb54129f832556ea16538e.svg"
 								lightSrc="/assets/9c3d15a94528df326eb741af39b9f0a9.svg"
@@ -146,7 +143,6 @@ export default class DiscordRepModal extends Component {
 								height={154 / 1.25}
 							/>
 							<EmptyState.Text
-								className={marginBottom20}
 								note={`${response.statusCode}: ${response.statusText}`}
 							/>
 						</EmptyState>
