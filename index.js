@@ -1,24 +1,12 @@
 import React from "react";
 import { Plugin } from "@vizality/entities";
 
-import { patch } from "@vizality/patcher";
+import { patch, unpatchAll } from "@vizality/patcher";
 import { ContextMenu } from "@vizality/components";
 import { getModule } from "@vizality/webpack";
 import { open } from "@vizality/modal";
 
 import DiscordRepModal from "./components/DiscordRepModal";
-
-let unpatchDMUserContextMenu = () => {
-	console.log("discordrep-dmusercontextmenu", "Not patched");
-};
-let unpatchGuildChannelUserContextMenu = () => {
-	console.log("discordrep-guildchannelusercontextmenu", "Not patched");
-};
-
-const unpatch = () => {
-	unpatchDMUserContextMenu();
-	unpatchGuildChannelUserContextMenu();
-};
 
 const ContextMenuItem = (args) => (
 	<ContextMenu.Item
@@ -34,8 +22,7 @@ export default class DiscordRep extends Plugin {
 	start() {
 		this.injectStyles("./style.css");
 
-		unpatchDMUserContextMenu = patch(
-			"discordrep-dmusercontextmenu",
+		patch(
 			getModule((m) => m.default?.displayName === "DMUserContextMenu"),
 			"default",
 			(args, res) => {
@@ -45,8 +32,7 @@ export default class DiscordRep extends Plugin {
 			}
 		);
 
-		unpatchGuildChannelUserContextMenu = patch(
-			"discordrep-guildchannelusercontextmenu",
+		patch(
 			getModule(
 				(m) => m.default?.displayName === "GuildChannelUserContextMenu"
 			),
@@ -60,6 +46,6 @@ export default class DiscordRep extends Plugin {
 	}
 
 	stop() {
-		unpatch();
+		unpatchAll("discordrep");
 	}
 }
