@@ -60,7 +60,15 @@ export default class DiscordRepModal extends Component {
 									width={433 / 1.25}
 									height={232 / 1.25}
 								/>
-								<EmptyState.Text note="This user has opted out." />
+								<EmptyState.Text
+									note={
+										<>
+											This user has opted out.
+											<br />
+											It's sad but true, try someone else maybe?
+										</>
+									}
+								/>
 							</EmptyState>
 						),
 					});
@@ -143,7 +151,18 @@ export default class DiscordRepModal extends Component {
 								height={154 / 1.25}
 							/>
 							<EmptyState.Text
-								note={`${response.statusCode}: ${response.statusText}`}
+								note={
+									<>
+										Looks like our friends over at
+										<br />
+										discordrep.com are having some issues!
+										<br />
+										<br />
+										Here's what they have to say:
+										<br />
+										{response.statusCode} - {response.statusText}
+									</>
+								}
 							/>
 						</EmptyState>
 					),
