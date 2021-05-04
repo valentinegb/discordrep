@@ -1,3 +1,9 @@
+/*
+ ! So the discordrep.com devs got mad at me for letting you guys see the API key but uh,
+ ! I can't really hide it so just... don't use it?
+ ! You can get your own by joining their server and typing "-api gen", it's really easy :T
+ */
+
 import React, { Component } from "react";
 
 import {
@@ -46,7 +52,7 @@ export default class DiscordRepModal extends Component {
 	componentDidMount() {
 		get(`https://discordrep.com/api/v3/rep/${this.props.user.id}`, {
 			Authorization:
-				"D-REP.UDGIF65TXKMCAPQD3.ZH7BKAET9E70SJP0XZXCPKWQ.VPYD3XKCXNBZGT3",
+				"D-REP.4ZMGK41BR427SNQMSPEO9VI24PWEKP9CYSOUTVRM87M61QOXNW5CPCGFIC",
 		})
 			.then((response) => {
 				this.setState({ loading: false });
