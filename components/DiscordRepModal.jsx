@@ -64,19 +64,6 @@ export default class DiscordRepModal extends Component {
 					</Slide>
 
 					<Slide
-						id="content"
-						impressionName="impression_discordrep_content"
-						impressionMetadata={{ impression_group: "discordrep_flow" }}
-					>
-						<Modal.Header separator={false}>
-							<FormTitle tag="h4">{this.state.header}</FormTitle>
-							<Modal.CloseButton onClick={() => close()} />
-						</Modal.Header>
-						<Modal.Content>{this.state.content}</Modal.Content>
-						{this.state.footer}
-					</Slide>
-
-					<Slide
 						id="error"
 						impressionName="impression_discordrep_error"
 						impressionMetadata={{ impression_group: "discordrep_flow" }}
@@ -91,6 +78,19 @@ export default class DiscordRepModal extends Component {
 								<EmptyState.Text note={this.state.errorText} />
 							</EmptyState>
 						</Modal.Content>
+					</Slide>
+
+					<Slide
+						id="content"
+						impressionName="impression_discordrep_content"
+						impressionMetadata={{ impression_group: "discordrep_flow" }}
+					>
+						<Modal.Header separator={false}>
+							<FormTitle tag="h4">{this.state.header}</FormTitle>
+							<Modal.CloseButton onClick={() => close()} />
+						</Modal.Header>
+						<Modal.Content>{this.state.content}</Modal.Content>
+						{this.state.footer}
 					</Slide>
 				</Slides>
 			</Modal>
