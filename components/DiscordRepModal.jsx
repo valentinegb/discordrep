@@ -22,6 +22,7 @@ export default class DiscordRepModal extends Component {
 		super(props);
 
 		this.state = {
+			loading: true,
 			content: <Spinner />,
 			footer: null,
 		};
@@ -48,7 +49,7 @@ export default class DiscordRepModal extends Component {
 				"D-REP.UDGIF65TXKMCAPQD3.ZH7BKAET9E70SJP0XZXCPKWQ.VPYD3XKCXNBZGT3",
 		})
 			.then((response) => {
-				this.setState({ got: true });
+				this.setState({ loading: false });
 
 				if (response.body.optout)
 					return this.setState({
@@ -142,6 +143,7 @@ export default class DiscordRepModal extends Component {
 			})
 			.catch((response) => {
 				this.setState({
+					loading: false,
 					content: (
 						<EmptyState className={marginBottom20} theme={theme}>
 							<EmptyState.Image
@@ -168,5 +170,31 @@ export default class DiscordRepModal extends Component {
 					),
 				});
 			});
+
+		setTimeout(() => {
+			if (this.state.loading)
+				this.setState({
+					loading: false,
+					content: (
+						<EmptyState className={marginBottom20} theme={theme}>
+							<EmptyState.Image
+								darkSrc="/assets/87ad02315e38924402c7fb5017cf11ab.svg"
+								lightSrc="/assets/38af48da1542dfedce582fc5e8042285.svg"
+								width={240}
+								height={130}
+							/>
+							<EmptyState.Text
+								note={
+									<>
+										Hello? Anybody home?
+										<br />
+										It seems discordrep.com isn't responding, try again later.
+									</>
+								}
+							/>
+						</EmptyState>
+					),
+				});
+		}, 10000);
 	}
 }
