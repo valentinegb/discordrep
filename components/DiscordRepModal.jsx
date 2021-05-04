@@ -92,9 +92,9 @@ export default class DiscordRepModal extends Component {
 						<Flex className={marginBottom20}>
 							<Tooltip
 								text={
-									reputation == 0
+									upvotes + downvotes == 0
 										? "No votes"
-										: reputation > 0
+										: reputation >= 0
 										? `+${reputation}`
 										: reputation
 								}
