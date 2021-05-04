@@ -21,7 +21,6 @@ import { getModule, getModuleByDisplayName } from "@vizality/webpack";
 
 const { Slides, Slide } = getModule("Slides");
 const EmptyState = getModuleByDisplayName("EmptyState");
-const { theme } = getModule("locale", "theme");
 const { marginBottom20, marginBottom40 } = getModule("marginBottom20");
 
 export default class DiscordRepModal extends Component {
@@ -33,10 +32,14 @@ export default class DiscordRepModal extends Component {
 			header: null,
 			content: null,
 			footer: null,
+			errorImage: null,
+			errorText: null,
 		};
 	}
 
 	render() {
+		const { theme } = getModule("locale", "theme");
+
 		return (
 			<Modal size="">
 				<Slides
@@ -59,6 +62,7 @@ export default class DiscordRepModal extends Component {
 							<Spinner className={marginBottom40} />
 						</Modal.Content>
 					</Slide>
+
 					<Slide
 						id="content"
 						impressionName="impression_discordrep_content"
@@ -71,6 +75,7 @@ export default class DiscordRepModal extends Component {
 						<Modal.Content>{this.state.content}</Modal.Content>
 						{this.state.footer}
 					</Slide>
+
 					<Slide
 						id="error"
 						impressionName="impression_discordrep_error"
@@ -80,7 +85,12 @@ export default class DiscordRepModal extends Component {
 							<FormTitle tag="h4">{this.state.header}</FormTitle>
 							<Modal.CloseButton onClick={() => close()} />
 						</Modal.Header>
-						<Modal.Content>{this.state.content}</Modal.Content>
+						<Modal.Content>
+							<EmptyState className={marginBottom20} theme={theme}>
+								{this.state.errorImage}
+								<EmptyState.Text note={this.state.errorText} />
+							</EmptyState>
+						</Modal.Content>
 					</Slide>
 				</Slides>
 			</Modal>
@@ -96,24 +106,20 @@ export default class DiscordRepModal extends Component {
 				if (response.body.optout)
 					return this.setState({
 						header: "User Opted Out",
-						content: (
-							<EmptyState className={marginBottom20} theme={theme}>
-								<EmptyState.Image
-									darkSrc="/assets/8c998f8fb62016fcfb4901e424ff378b.svg"
-									lightSrc="/assets/645df33d735507f39c78ce0cac7437f0.svg"
-									width={433 / 1.25}
-									height={232 / 1.25}
-								/>
-								<EmptyState.Text
-									note={
-										<>
-											This user has opted out.
-											<br />
-											It's sad but true, try someone else maybe?
-										</>
-									}
-								/>
-							</EmptyState>
+						errorImage: (
+							<EmptyState.Image
+								darkSrc="/assets/8c998f8fb62016fcfb4901e424ff378b.svg"
+								lightSrc="/assets/645df33d735507f39c78ce0cac7437f0.svg"
+								width={433 / 1.25}
+								height={232 / 1.25}
+							/>
+						),
+						errorText: (
+							<>
+								This user has opted out.
+								<br />
+								It's sad but true, try someone else maybe?
+							</>
 						),
 						slide: "error",
 					});
@@ -191,29 +197,25 @@ export default class DiscordRepModal extends Component {
 			.catch((response) => {
 				this.setState({
 					header: "Request Error",
-					content: (
-						<EmptyState className={marginBottom20} theme={theme}>
-							<EmptyState.Image
-								darkSrc="/assets/e9baf4b505eb54129f832556ea16538e.svg"
-								lightSrc="/assets/9c3d15a94528df326eb741af39b9f0a9.svg"
-								width={254 / 1.25}
-								height={154 / 1.25}
-							/>
-							<EmptyState.Text
-								note={
-									<>
-										Looks like our friends over at
-										<br />
-										discordrep.com are having some issues!
-										<br />
-										<br />
-										Here's what they have to say:
-										<br />
-										{response.statusCode} - {response.statusText}
-									</>
-								}
-							/>
-						</EmptyState>
+					errorImage: (
+						<EmptyState.Image
+							darkSrc="/assets/e9baf4b505eb54129f832556ea16538e.svg"
+							lightSrc="/assets/9c3d15a94528df326eb741af39b9f0a9.svg"
+							width={254 / 1.25}
+							height={154 / 1.25}
+						/>
+					),
+					errorText: (
+						<>
+							Looks like our friends over at
+							<br />
+							discordrep.com are having some issues!
+							<br />
+							<br />
+							Here's what they have to say:
+							<br />
+							{response.statusCode} - {response.statusText}
+						</>
 					),
 					slide: "error",
 				});
@@ -223,24 +225,20 @@ export default class DiscordRepModal extends Component {
 			if (this.state.slide == "loading")
 				this.setState({
 					header: "Request Timeout",
-					content: (
-						<EmptyState className={marginBottom20} theme={theme}>
-							<EmptyState.Image
-								darkSrc="/assets/87ad02315e38924402c7fb5017cf11ab.svg"
-								lightSrc="/assets/38af48da1542dfedce582fc5e8042285.svg"
-								width={240}
-								height={130}
-							/>
-							<EmptyState.Text
-								note={
-									<>
-										Hello? Anybody home?
-										<br />
-										It seems discordrep.com isn't responding, try again later.
-									</>
-								}
-							/>
-						</EmptyState>
+					errorImage: (
+						<EmptyState.Image
+							darkSrc="/assets/87ad02315e38924402c7fb5017cf11ab.svg"
+							lightSrc="/assets/38af48da1542dfedce582fc5e8042285.svg"
+							width={240}
+							height={130}
+						/>
+					),
+					errorText: (
+						<>
+							Hello? Anybody home?
+							<br />
+							It seems discordrep.com isn't responding, try again later.
+						</>
 					),
 					slide: "error",
 				});
