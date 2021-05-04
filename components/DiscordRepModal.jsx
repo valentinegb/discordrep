@@ -19,32 +19,70 @@ import { get } from "@vizality/http";
 import { close } from "@vizality/modal";
 import { getModule, getModuleByDisplayName } from "@vizality/webpack";
 
+const { Slides, Slide } = getModule("Slides");
 const EmptyState = getModuleByDisplayName("EmptyState");
 const { theme } = getModule("locale", "theme");
-const { marginBottom20 } = getModule("marginBottom20");
+const { marginBottom20, marginBottom40 } = getModule("marginBottom20");
 
 export default class DiscordRepModal extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			loading: true,
-			content: <Spinner />,
+			slide: "loading",
+			header: null,
+			content: null,
 			footer: null,
 		};
 	}
 
 	render() {
 		return (
-			<Modal>
-				<Modal.Header size={Modal.Sizes.MEDIUM}>
-					<FormTitle tag="h4">
-						{this.props.user.username}'s DiscordRep Stats
-					</FormTitle>
-					<Modal.CloseButton onClick={() => close()} />
-				</Modal.Header>
-				<Modal.Content>{this.state.content}</Modal.Content>
-				{this.state.footer}
+			<Modal size="">
+				<Slides
+					activeSlide={this.state.slide}
+					onSlideReady={(e) => {
+						return this.setState({ slide: e });
+					}}
+					width={440}
+				>
+					<Slide
+						id="loading"
+						impressionName="impression_discordrep_landing"
+						impressionMetadata={{ impression_group: "discordrep_flow" }}
+					>
+						<Modal.Header separator={false}>
+							<FormTitle tag="h4">Loading...</FormTitle>
+							<Modal.CloseButton onClick={() => close()} />
+						</Modal.Header>
+						<Modal.Content>
+							<Spinner className={marginBottom40} />
+						</Modal.Content>
+					</Slide>
+					<Slide
+						id="content"
+						impressionName="impression_discordrep_content"
+						impressionMetadata={{ impression_group: "discordrep_flow" }}
+					>
+						<Modal.Header separator={false}>
+							<FormTitle tag="h4">{this.state.header}</FormTitle>
+							<Modal.CloseButton onClick={() => close()} />
+						</Modal.Header>
+						<Modal.Content>{this.state.content}</Modal.Content>
+						{this.state.footer}
+					</Slide>
+					<Slide
+						id="error"
+						impressionName="impression_discordrep_error"
+						impressionMetadata={{ impression_group: "discordrep_flow" }}
+					>
+						<Modal.Header separator={false}>
+							<FormTitle tag="h4">{this.state.header}</FormTitle>
+							<Modal.CloseButton onClick={() => close()} />
+						</Modal.Header>
+						<Modal.Content>{this.state.content}</Modal.Content>
+					</Slide>
+				</Slides>
 			</Modal>
 		);
 	}
@@ -55,10 +93,9 @@ export default class DiscordRepModal extends Component {
 				"D-REP.4ZMGK41BR427SNQMSPEO9VI24PWEKP9CYSOUTVRM87M61QOXNW5CPCGFIC",
 		})
 			.then((response) => {
-				this.setState({ loading: false });
-
 				if (response.body.optout)
 					return this.setState({
+						header: "User Opted Out",
 						content: (
 							<EmptyState className={marginBottom20} theme={theme}>
 								<EmptyState.Image
@@ -78,6 +115,7 @@ export default class DiscordRepModal extends Component {
 								/>
 							</EmptyState>
 						),
+						slide: "error",
 					});
 
 				const { upvotes, downvotes } = response.body;
@@ -88,6 +126,7 @@ export default class DiscordRepModal extends Component {
 				const upvotesDegree = upvotes * multiplier;
 
 				this.setState({
+					header: `${this.props.user.username}'s DiscordRep Stats`,
 					content: (
 						<Flex className={marginBottom20}>
 							<Tooltip
@@ -146,11 +185,12 @@ export default class DiscordRepModal extends Component {
 							</a>
 						</Modal.Footer>
 					),
+					slide: "content",
 				});
 			})
 			.catch((response) => {
 				this.setState({
-					loading: false,
+					header: "Request Error",
 					content: (
 						<EmptyState className={marginBottom20} theme={theme}>
 							<EmptyState.Image
@@ -175,13 +215,14 @@ export default class DiscordRepModal extends Component {
 							/>
 						</EmptyState>
 					),
+					slide: "error",
 				});
 			});
 
 		setTimeout(() => {
-			if (this.state.loading)
+			if (this.state.slide == "loading")
 				this.setState({
-					loading: false,
+					header: "Request Timeout",
 					content: (
 						<EmptyState className={marginBottom20} theme={theme}>
 							<EmptyState.Image
@@ -201,6 +242,7 @@ export default class DiscordRepModal extends Component {
 							/>
 						</EmptyState>
 					),
+					slide: "error",
 				});
 		}, 10000);
 	}
