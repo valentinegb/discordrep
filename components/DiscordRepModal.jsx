@@ -93,6 +93,7 @@ export default class DiscordRepModal extends Component {
 										: reputation
 								}
 								position="left"
+								hideOnClick={false}
 							>
 								<div
 									className="discordrep-piechart"
